@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:lyra/lyra.dart';
 import 'package:collection/collection.dart';
 import 'package:pointycastle/ecc/api.dart' show ECPoint;
 
@@ -110,10 +111,15 @@ class EthPrivateKey extends CredentialsWithKnownAddress {
   @override
   final bool isolateSafe = true;
 
-  @override
+/*   @override
   EthereumAddress get address {
     return _cachedAddress ??=
         EthereumAddress(publicKeyToAddress(privateKeyToPublic(privateKeyInt)));
+  } */
+  @override
+  EthereumAddress get address {
+    final pubKey = LyraCrypto.privateKeyToPublicKey(privateKey);
+    return _cachedAddress ??= EthereumAddress(pubKey);
   }
 
   /// Get the encoded public key in an (uncompressed) byte representation.

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
+import 'package:lyra/lyra.dart';
 import 'package:meta/meta.dart';
 
 import '../crypto/formatting.dart';
@@ -19,8 +20,8 @@ class EthereumAddress {
   final Uint8List addressBytes;
 
   /// An ethereum address from the raw address bytes.
-  const EthereumAddress(this.addressBytes)
-      : assert(addressBytes.length == addressByteLength);
+  const EthereumAddress(this.addressBytes);
+  //    : assert(addressBytes.length == addressByteLength);
 
   /// Constructs an Ethereum address from a public key. The address is formed by
   /// the last 20 bytes of the keccak hash of the public key.
@@ -92,7 +93,7 @@ class EthereumAddress {
   }
 
   @override
-  String toString() => hex;
+  String toString() => LyraCrypto.lyraEncPub(addressBytes);
 
   @override
   bool operator ==(other) {
