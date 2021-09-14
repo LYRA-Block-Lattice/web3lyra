@@ -27,8 +27,8 @@ void main() {
     final decoded = event.decodeResults(topics, data);
 
     expect(decoded, [
-      EthereumAddress.fromHex('0xDd611f2b2CaF539aC9e12CF84C09CB9bf81CA37F'),
-      EthereumAddress.fromHex('0x6c87E1a114C3379BEc929f6356c5263d62542C13'),
+      LyraAddress.fromHex('0xDd611f2b2CaF539aC9e12CF84C09CB9bf81CA37F'),
+      LyraAddress.fromHex('0x6c87E1a114C3379BEc929f6356c5263d62542C13'),
       BigInt.from(0x1234),
     ]);
   });

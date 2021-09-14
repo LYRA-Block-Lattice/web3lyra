@@ -15,11 +15,11 @@ import 'javascript.dart';
 class MetaMaskCredentials extends CredentialsWithKnownAddress
     implements CustomTransactionSender {
   @override
-  final EthereumAddress address;
+  final LyraAddress address;
   final Ethereum ethereum;
 
   MetaMaskCredentials(String hexAddress, this.ethereum)
-      : address = EthereumAddress.fromHex(hexAddress);
+      : address = LyraAddress.fromHex(hexAddress);
 
   @override
   Future<MsgSignature> signToSignature(Uint8List payload, {int? chainId}) {

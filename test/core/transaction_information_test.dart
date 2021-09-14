@@ -44,12 +44,12 @@ void main() {
                 '0x5548b5f215b99674c7f23c9a701a005b5c18e4a963b55163eddada54562ac521'),
             cumulativeGasUsed: BigInt.from(314463),
             blockNumber: const BlockNum.exact(24),
-            contractAddress: EthereumAddress.fromHex(
+            contractAddress: LyraAddress.fromHex(
                 '0x6671e02bb8bd3a234b13d79d1c285a9df657233d'),
             status: true,
-            from: EthereumAddress.fromHex(
+            from: LyraAddress.fromHex(
                 '0xf8c59caf9bb8a7a2991160b592ac123108d88f7b'),
-            to: EthereumAddress.fromHex(
+            to: LyraAddress.fromHex(
                 '0xf8c59caf9bb8a7a2991160b592ac123108d88f7b'),
             gasUsed: BigInt.from(314463),
             logs: [
@@ -61,7 +61,7 @@ void main() {
                       '0x8216c5785ac562ff41e2dcfdf5785ac562ff41e2dcfdf829c5a142f1fccd7d',
                   transactionHash: '0xdf829c5a142f1fccd7d8216c5785ac562ff41e2dcfdf5785ac562ff41e2dcf',
                   transactionIndex: 0,
-                  address: EthereumAddress.fromHex('0x16c5785ac562ff41e2dcfdf829c5a142f1fccd7d'),
+                  address: LyraAddress.fromHex('0x16c5785ac562ff41e2dcfdf829c5a142f1fccd7d'),
                   data: '0x0000000000000000000000000000000000000000000000000000000000000000',
                   topics: [
                     '0x59ebeb90bc63057b6515673c3ecf9438e5058bca0f92585014eced636878c9a5'

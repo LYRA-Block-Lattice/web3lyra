@@ -94,7 +94,7 @@ class FilterOptions {
   /// The optional address to limit this filter to. If not null, only logs
   /// emitted from the contract at [address] will be considered. Otherwise, all
   /// log events will be reported.
-  final EthereumAddress? address;
+  final LyraAddress? address;
 
   /// The topics that must be present in the event to be included in this
   /// filter. The topics must be represented as a hexadecimal value prefixed
@@ -148,7 +148,7 @@ class FilterEvent {
         blockNum = log['blockNumber'] != null
             ? hexToInt(log['blockNumber'] as String).toInt()
             : null,
-        address = EthereumAddress.fromHex(log['address'] as String),
+        address = LyraAddress.fromHex(log['address'] as String),
         data = log['data'] as String?,
         topics = (log['topics'] as List?)?.cast<String>();
 
@@ -175,7 +175,7 @@ class FilterEvent {
   final int? blockNum;
 
   /// The address (of the smart contract) from which this log originated.
-  final EthereumAddress? address;
+  final LyraAddress? address;
 
   /// The data blob of this log, hex-encoded.
   ///

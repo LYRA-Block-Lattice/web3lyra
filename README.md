@@ -25,11 +25,11 @@ import 'dart:math'; //used for the random number generator
 
 import 'package:web3dart/web3dart.dart';
 // You can create Credentials from private keys
-Credentials fromHex = EthPrivateKey.fromHex("c87509a[...]dc0d3");
+Credentials fromHex = LyraPrivateKey.fromHex("c87509a[...]dc0d3");
 
 // Or generate a new key randomly
 var rng = new Random.secure();
-Credentials random = EthPrivateKey.createRandom(random)(rng);
+Credentials random = LyraPrivateKey.createRandom(random)(rng);
 
 // In either way, the library can derive the public key and the address
 // from a private key:
@@ -105,7 +105,7 @@ var credentials = ethClient.credentialsFromPrivateKey("0x...");
 await client.sendTransaction(
   credentials,
   Transaction(
-    to: EthereumAddress.fromHex('0xC91...3706'),
+    to: LyraAddress.fromHex('0xC91...3706'),
     gasPrice: EtherAmount.inWei(BigInt.one),
     maxGas: 100000,
     value: EtherAmount.fromUnitAndValue(EtherUnit.ether, 1),

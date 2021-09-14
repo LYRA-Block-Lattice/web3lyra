@@ -8,7 +8,7 @@ final pubKeys = {};
 void main() {
   test('generate wallet', () {
     final rnd = Random.secure();
-    final prvKey = EthPrivateKey.createRandom(rnd);
+    final prvKey = LyraPrivateKey.createRandom(rnd);
     final pub = prvKey.address;
     expect(pub.toString()[0], 'L');
   });

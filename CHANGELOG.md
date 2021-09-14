@@ -1,6 +1,6 @@
 ## 2.2.0
 
-- Add `EthPrivateKey.publicKey` getters
+- Add `LyraPrivateKey.publicKey` getters
 - Fix `window.ethereum` always being non-null, even if no provider is available
 
 ## 2.1.4
@@ -9,7 +9,7 @@
 
 ## 2.1.3
 
-- Fix `EthPrivateKey.createRandom` sometimes failing
+- Fix `LyraPrivateKey.createRandom` sometimes failing
 
 ## 2.1.2
 
@@ -85,7 +85,7 @@ This version contains breaking changes! Here is an overview listing some of them
 
 | Before        | Updated API  |
 | :------------- | -----:|
-| Creating credentials via `Credentials.fromPrivateKeyHex`   | Use the `EthPrivateKey` class or, even better, `client.credentialsFromPrivateKey` |
+| Creating credentials via `Credentials.fromPrivateKeyHex`   | Use the `LyraPrivateKey` class or, even better, `client.credentialsFromPrivateKey` |
 | Sending transactions or calling contract functions | The api has been changed to just a single methods instead of a transaction builder. See the examples for details. |
 | Low-level cryptographic operations like signing, hashing and converting hex <-> byte array <-> integer  | Not available in the core library. Import `package:web3dart/crypto.dart` instead |
 

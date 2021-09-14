@@ -127,7 +127,7 @@ class _ContractGeneration {
       ..optionalParameters.addAll([
         Parameter((b) => b
           ..name = 'address'
-          ..type = ethereumAddress
+          ..type = LyraAddress
           ..named = true
           ..required = true),
         Parameter((b) => b

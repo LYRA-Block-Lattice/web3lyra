@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('signs messages', () async {
-    final key = EthPrivateKey(hexToBytes(
+    final key = LyraPrivateKey(hexToBytes(
         'a392604efc2fad9c0b3da43b5f698a2e3f270f170d859912be0d54742275c5f6'));
     final signature =
         await key.signPersonalMessage(ascii.encode('A test message'));
@@ -17,7 +17,7 @@ void main() {
 
   test('signs message for chainId', () async {
     // https://github.com/ethereumjs/ethereumjs-util/blob/8ffe697fafb33cefc7b7ec01c11e3a7da787fe0e/test/index.js#L532
-    final key = EthPrivateKey(hexToBytes(
+    final key = LyraPrivateKey(hexToBytes(
         '3c9229289a6125f7fdf1885a77bb12c37a8d3b4962d936f7e3084dece32a3ca1'));
     final signature = await key.sign(
         hexToBytes(

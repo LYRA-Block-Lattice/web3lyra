@@ -24,13 +24,13 @@ void main() {
 
       test('erc20 get balance', () async {
         final shibaInu = Erc20(
-          address: EthereumAddress.fromHex(
-              '0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce'),
+          address:
+              LyraAddress.fromHex('0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce'),
           client: client,
         );
 
-        final balance = await shibaInu.balanceOf(EthereumAddress.fromHex(
-            '0xdead000000000000000042069420694206942069'));
+        final balance = await shibaInu.balanceOf(
+            LyraAddress.fromHex('0xdead000000000000000042069420694206942069'));
 
         expect(balance >= BigInt.parse('410243042034234643784017156276017'),
             isTrue);

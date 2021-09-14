@@ -46,7 +46,7 @@ final _contractAbi = _i1.ContractAbi.fromJson(
 
 class Contract extends _i1.GeneratedContract {
   Contract(
-      {required _i1.EthereumAddress address,
+      {required _i1.LyraAddress address,
       required _i1.Web3Client client,
       int? chainId})
       : super(_i1.DeployedContract(_contractAbi, address), client, chainId);
@@ -138,7 +138,7 @@ final _contractAbi = _i1.ContractAbi.fromJson(
 
 class Contract extends _i1.GeneratedContract {
   Contract(
-      {required _i1.EthereumAddress address,
+      {required _i1.LyraAddress address,
       required _i1.Web3Client client,
       int? chainId})
       : super(_i1.DeployedContract(_contractAbi, address), client, chainId);
@@ -210,7 +210,7 @@ final _contractAbi = _i1.ContractAbi.fromJson(
 
 class Contract extends _i1.GeneratedContract {
   Contract(
-      {required _i1.EthereumAddress address,
+      {required _i1.LyraAddress address,
       required _i1.Web3Client client,
       int? chainId})
       : super(_i1.DeployedContract(_contractAbi, address), client, chainId);
@@ -242,7 +242,7 @@ final _contractAbi = _i1.ContractAbi.fromJson(
 
 class Contract extends _i1.GeneratedContract {
   Contract(
-      {required _i1.EthereumAddress address,
+      {required _i1.LyraAddress address,
       required _i1.Web3Client client,
       int? chainId})
       : super(_i1.DeployedContract(_contractAbi, address), client, chainId);
@@ -281,7 +281,7 @@ final _contractAbi = _i1.ContractAbi.fromJson('[]', 'Contract');
 
 class Contract extends _i1.GeneratedContract {
   Contract(
-      {required _i1.EthereumAddress address,
+      {required _i1.LyraAddress address,
       required _i1.Web3Client client,
       int? chainId})
       : super(_i1.DeployedContract(_contractAbi, address), client, chainId);

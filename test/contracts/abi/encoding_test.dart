@@ -47,7 +47,7 @@ void _runTests(String content) {
 /// web3dart:
 /// - [int] will be mapped to [BigInt]
 /// - a [String] starting with "0x" to [Uint8List]
-/// - Strings starting with "@" will be interpreted as [EthereumAddress]
+/// - Strings starting with "@" will be interpreted as [LyraAddress]
 /// - Strings ending with "H" as [BigInt]
 dynamic _mapFromTest(dynamic input) {
   if (input is int) return BigInt.from(input);
@@ -55,7 +55,7 @@ dynamic _mapFromTest(dynamic input) {
   if (input is String) {
     if (input.startsWith('0x')) return hexToBytes(input);
     if (input.startsWith('@')) {
-      return EthereumAddress.fromHex(input.substring(1));
+      return LyraAddress.fromHex(input.substring(1));
     }
     if (input.endsWith('H')) {
       return BigInt.parse(input.substring(0, input.length - 1), radix: 16);

@@ -12,7 +12,7 @@ class DeployedContract {
   final ContractAbi abi;
 
   /// The Ethereum address at which this contract is reachable.
-  final EthereumAddress address;
+  final LyraAddress address;
 
   DeployedContract(this.abi, this.address);
 

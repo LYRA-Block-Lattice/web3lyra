@@ -10,7 +10,7 @@ import '../crypto/secp256k1.dart';
 
 /// Represents an Ethereum address.
 @immutable
-class EthereumAddress {
+class LyraAddress {
   static final RegExp _basicAddress =
       RegExp(r'^(0x)?[0-9a-f]{40}', caseSensitive: false);
 
@@ -20,13 +20,13 @@ class EthereumAddress {
   final Uint8List addressBytes;
 
   /// An ethereum address from the raw address bytes.
-  const EthereumAddress(this.addressBytes);
+  const LyraAddress(this.addressBytes);
   //    : assert(addressBytes.length == addressByteLength);
 
   /// Constructs an Ethereum address from a public key. The address is formed by
   /// the last 20 bytes of the keccak hash of the public key.
-  factory EthereumAddress.fromPublicKey(Uint8List publicKey) {
-    return EthereumAddress(publicKeyToAddress(publicKey));
+  factory LyraAddress.fromPublicKey(Uint8List publicKey) {
+    return LyraAddress(publicKeyToAddress(publicKey));
   }
 
   /// Parses an Ethereum address from the hexadecimal representation. The
@@ -35,7 +35,7 @@ class EthereumAddress {
   ///
   /// If [enforceEip55] is true or the address has both uppercase and lowercase
   /// chars, the address must be valid according to [EIP 55](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md).
-  factory EthereumAddress.fromHex(String hex, {bool enforceEip55 = false}) {
+  factory LyraAddress.fromHex(String hex, {bool enforceEip55 = false}) {
     if (!_basicAddress.hasMatch(hex)) {
       throw ArgumentError.value(hex, 'address',
           'Must be a hex string with a length of 40, optionally prefixed with "0x"');
@@ -43,7 +43,7 @@ class EthereumAddress {
 
     if (!enforceEip55 &&
         (hex.toUpperCase() == hex || hex.toLowerCase() == hex)) {
-      return EthereumAddress(hexToBytes(hex));
+      return LyraAddress(hexToBytes(hex));
     }
 
     // Validates as of EIP 55, https://ethereum.stackexchange.com/a/1379
@@ -59,7 +59,7 @@ class EthereumAddress {
       }
     }
 
-    return EthereumAddress(hexToBytes(hex));
+    return LyraAddress(hexToBytes(hex));
   }
 
   /// A hexadecimal representation of this address, padded to a length of 40
@@ -98,7 +98,7 @@ class EthereumAddress {
   @override
   bool operator ==(other) {
     return identical(this, other) ||
-        (other is EthereumAddress &&
+        (other is LyraAddress &&
             const ListEquality().equals(addressBytes, other.addressBytes));
   }
 

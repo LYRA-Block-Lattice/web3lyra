@@ -25,7 +25,7 @@ void main() {
   group('accepts and parses EIP 55', () {
     _lowerCaseToEip55.forEach((lower, eip55) {
       test('parses $lower -> $eip55', () {
-        expect(EthereumAddress.fromHex(lower).hexEip55, eip55);
+        expect(LyraAddress.fromHex(lower).hexEip55, eip55);
       });
     });
   });

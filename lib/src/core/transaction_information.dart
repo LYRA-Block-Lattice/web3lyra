@@ -6,15 +6,14 @@ class TransactionInformation {
         blockNumber = map['blockNumber'] != null
             ? BlockNum.exact(int.parse(map['blockNumber'] as String))
             : const BlockNum.pending(),
-        from = EthereumAddress.fromHex(map['from'] as String),
+        from = LyraAddress.fromHex(map['from'] as String),
         gas = int.parse(map['gas'] as String),
         gasPrice = EtherAmount.inWei(BigInt.parse(map['gasPrice'] as String)),
         hash = map['hash'] as String,
         input = hexToBytes(map['input'] as String),
         nonce = int.parse(map['nonce'] as String),
-        to = map['to'] != null
-            ? EthereumAddress.fromHex(map['to'] as String)
-            : null,
+        to =
+            map['to'] != null ? LyraAddress.fromHex(map['to'] as String) : null,
         transactionIndex = map['transactionIndex'] != null
             ? int.parse(map['transactionIndex'] as String)
             : null,
@@ -32,7 +31,7 @@ class TransactionInformation {
   final BlockNum blockNumber;
 
   /// The sender of this transaction.
-  final EthereumAddress from;
+  final LyraAddress from;
 
   /// How many units of gas have been used in this transaction.
   final int gas;
@@ -52,7 +51,7 @@ class TransactionInformation {
   final int nonce;
 
   /// Address of the receiver. `null` when its a contract creation transaction
-  final EthereumAddress? to;
+  final LyraAddress? to;
 
   /// Integer of the transaction's index position in the block. `null` when it's
   /// pending.
@@ -97,16 +96,15 @@ class TransactionReceipt {
             ? BlockNum.exact(int.parse(map['blockNumber'] as String))
             : const BlockNum.pending(),
         from = map['from'] != null
-            ? EthereumAddress.fromHex(map['from'] as String)
+            ? LyraAddress.fromHex(map['from'] as String)
             : null,
-        to = map['to'] != null
-            ? EthereumAddress.fromHex(map['to'] as String)
-            : null,
+        to =
+            map['to'] != null ? LyraAddress.fromHex(map['to'] as String) : null,
         cumulativeGasUsed = hexToInt(map['cumulativeGasUsed'] as String),
         gasUsed =
             map['gasUsed'] != null ? hexToInt(map['gasUsed'] as String) : null,
         contractAddress = map['contractAddress'] != null
-            ? EthereumAddress.fromHex(map['contractAddress'] as String)
+            ? LyraAddress.fromHex(map['contractAddress'] as String)
             : null,
         status = map['status'] != null
             ? (hexToDartInt(map['status'] as String) == 1)
@@ -130,11 +128,11 @@ class TransactionReceipt {
   final BlockNum blockNumber;
 
   /// Address of the sender.
-  final EthereumAddress? from;
+  final LyraAddress? from;
 
   /// Address of the receiver or `null` if it was a contract creation
   /// transaction.
-  final EthereumAddress? to;
+  final LyraAddress? to;
 
   /// The total amount of gas used when this transaction was executed in the
   /// block.
@@ -145,7 +143,7 @@ class TransactionReceipt {
 
   /// The address of the contract created if the transaction was a contract
   /// creation. `null` otherwise.
-  final EthereumAddress? contractAddress;
+  final LyraAddress? contractAddress;
 
   /// Whether this transaction was executed successfully.
   final bool? status;

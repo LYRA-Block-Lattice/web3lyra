@@ -8,7 +8,7 @@ final _contractAbi = _i1.ContractAbi.fromJson(
 
 class Token extends _i1.GeneratedContract {
   Token(
-      {required _i1.EthereumAddress address,
+      {required _i1.LyraAddress address,
       required _i1.Web3Client client,
       int? chainId})
       : super(_i1.DeployedContract(_contractAbi, address), client, chainId);
@@ -16,7 +16,7 @@ class Token extends _i1.GeneratedContract {
   /// The optional [transaction] parameter can be used to override parameters
   /// like the gas price, nonce and max gas. The `data` and `to` fields will be
   /// set by the contract.
-  Future<String> sendCoin(_i1.EthereumAddress receiver, BigInt amount,
+  Future<String> sendCoin(_i1.LyraAddress receiver, BigInt amount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
     final function = self.function('sendCoin');
@@ -27,7 +27,7 @@ class Token extends _i1.GeneratedContract {
   /// The optional [atBlock] parameter can be used to view historical data. When
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
-  Future<BigInt> getBalanceInEth(_i1.EthereumAddress addr,
+  Future<BigInt> getBalanceInEth(_i1.LyraAddress addr,
       {_i1.BlockNum? atBlock}) async {
     final function = self.function('getBalanceInEth');
     final params = [addr];
@@ -38,7 +38,7 @@ class Token extends _i1.GeneratedContract {
   /// The optional [atBlock] parameter can be used to view historical data. When
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
-  Future<BigInt> getBalance(_i1.EthereumAddress addr,
+  Future<BigInt> getBalance(_i1.LyraAddress addr,
       {_i1.BlockNum? atBlock}) async {
     final function = self.function('getBalance');
     final params = [addr];
@@ -61,13 +61,13 @@ class Token extends _i1.GeneratedContract {
 
 class Transfer {
   Transfer(List<dynamic> response)
-      : from = (response[0] as _i1.EthereumAddress),
-        to = (response[1] as _i1.EthereumAddress),
+      : from = (response[0] as _i1.LyraAddress),
+        to = (response[1] as _i1.LyraAddress),
         value = (response[2] as BigInt);
 
-  final _i1.EthereumAddress from;
+  final _i1.LyraAddress from;
 
-  final _i1.EthereumAddress to;
+  final _i1.LyraAddress to;
 
   final BigInt value;
 }

@@ -5,11 +5,11 @@ class Transaction {
   ///
   /// This can be set to null, in which case the client will use the address
   /// belonging to the credentials used to this transaction.
-  final EthereumAddress? from;
+  final LyraAddress? from;
 
   /// The recipient of this transaction, or null for transactions that create a
   /// contract.
-  final EthereumAddress? to;
+  final LyraAddress? to;
 
   /// The maximum amount of gas to spend.
   ///
@@ -63,8 +63,8 @@ class Transaction {
         data = function.encodeCall(parameters);
 
   Transaction copyWith(
-      {EthereumAddress? from,
-      EthereumAddress? to,
+      {LyraAddress? from,
+      LyraAddress? to,
       int? maxGas,
       EtherAmount? gasPrice,
       EtherAmount? value,

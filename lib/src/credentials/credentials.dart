@@ -25,7 +25,7 @@ abstract class Credentials {
   bool get isolateSafe => false;
 
   /// Loads the ethereum address specified by these credentials.
-  Future<EthereumAddress> extractAddress();
+  Future<LyraAddress> extractAddress();
 
   /// Signs the [payload] with a private key. The output will be like the
   /// bytes representation of the [eth_sign RPC method](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign),
@@ -63,10 +63,10 @@ abstract class Credentials {
 /// Credentials where the [address] is known synchronously.
 abstract class CredentialsWithKnownAddress extends Credentials {
   /// The ethereum address belonging to this credential.
-  EthereumAddress get address;
+  LyraAddress get address;
 
   @override
-  Future<EthereumAddress> extractAddress() async {
+  Future<LyraAddress> extractAddress() async {
     return Future.value(address);
   }
 }
@@ -78,23 +78,23 @@ abstract class CustomTransactionSender extends Credentials {
 }
 
 /// Credentials that can sign payloads with an Ethereum private key.
-class EthPrivateKey extends CredentialsWithKnownAddress {
+class LyraPrivateKey extends CredentialsWithKnownAddress {
   /// ECC's d private parameter.
   final BigInt privateKeyInt;
   final Uint8List privateKey;
-  EthereumAddress? _cachedAddress;
+  LyraAddress? _cachedAddress;
 
   /// Creates a private key from a byte array representation.
   ///
   /// The bytes are interpreted as an unsigned integer forming the private key.
-  EthPrivateKey(this.privateKey)
+  LyraPrivateKey(this.privateKey)
       : privateKeyInt = bytesToUnsignedInt(privateKey);
 
   /// Parses a private key from a hexadecimal representation.
-  EthPrivateKey.fromHex(String hex) : this(hexToBytes(hex));
+  LyraPrivateKey.fromHex(String hex) : this(hexToBytes(hex));
 
   /// Creates a private key from the underlying number.
-  EthPrivateKey.fromInt(this.privateKeyInt)
+  LyraPrivateKey.fromInt(this.privateKeyInt)
       : privateKey = unsignedIntToBytes(privateKeyInt);
 
   /// Creates a new, random private key from the [random] number generator.
@@ -103,23 +103,18 @@ class EthPrivateKey extends CredentialsWithKnownAddress {
   /// is cryptographically secure. The private key could be reconstructed by
   /// someone else otherwise. Just using [Random()] is a very bad idea! At least
   /// use [Random.secure()].
-  factory EthPrivateKey.createRandom(Random random) {
+  factory LyraPrivateKey.createRandom(Random random) {
     final key = generateNewPrivateKey(random);
-    return EthPrivateKey(intToBytes(key));
+    return LyraPrivateKey(intToBytes(key));
   }
 
   @override
   final bool isolateSafe = true;
 
-/*   @override
-  EthereumAddress get address {
-    return _cachedAddress ??=
-        EthereumAddress(publicKeyToAddress(privateKeyToPublic(privateKeyInt)));
-  } */
   @override
-  EthereumAddress get address {
-    final pubKey = LyraCrypto.privateKeyToPublicKey(privateKey);
-    return _cachedAddress ??= EthereumAddress(pubKey);
+  LyraAddress get address {
+    return _cachedAddress ??=
+        LyraAddress(publicKeyToAddress(privateKeyToPublic(privateKeyInt)));
   }
 
   /// Get the encoded public key in an (uncompressed) byte representation.
@@ -144,7 +139,7 @@ class EthPrivateKey extends CredentialsWithKnownAddress {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is EthPrivateKey &&
+      other is LyraPrivateKey &&
           runtimeType == other.runtimeType &&
           const ListEquality().equals(privateKey, other.privateKey);
 

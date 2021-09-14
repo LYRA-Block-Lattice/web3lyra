@@ -6,7 +6,7 @@ part of 'package:web3dart/web3dart.dart';
 class _ExpensiveOperations {
   _ExpensiveOperations();
 
-  Future<EthPrivateKey> privateKeyFromHex(String privateKey) {
+  Future<LyraPrivateKey> privateKeyFromHex(String privateKey) {
     return _internalCreatePrivateKey(privateKey);
   }
 
@@ -22,8 +22,8 @@ class _ExpensiveOperations {
   }
 }
 
-Future<EthPrivateKey> _internalCreatePrivateKey(String hex) async {
-  final key = EthPrivateKey.fromHex(hex);
+Future<LyraPrivateKey> _internalCreatePrivateKey(String hex) async {
+  final key = LyraPrivateKey.fromHex(hex);
   // extracting the address is the expensive operation here. It will be
   // cached, so we only need to do this once
   await key.extractAddress();

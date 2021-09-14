@@ -92,8 +92,8 @@ class Web3Client {
   }
 
   /// Constructs a new [Credentials] with the provided [privateKey] by using
-  /// an [EthPrivateKey].
-  Future<EthPrivateKey> credentialsFromPrivateKey(String privateKey) {
+  /// an [LyraPrivateKey].
+  Future<LyraPrivateKey> credentialsFromPrivateKey(String privateKey) {
     return _operations.privateKeyFromHex(privateKey);
   }
 
@@ -150,9 +150,9 @@ class Web3Client {
     }
   }
 
-  Future<EthereumAddress> coinbaseAddress() async {
+  Future<LyraAddress> coinbaseAddress() async {
     final hex = await _makeRPCCall<String>('eth_coinbase');
-    return EthereumAddress.fromHex(hex);
+    return LyraAddress.fromHex(hex);
   }
 
   /// Returns true if the connected client is currently mining, false if not.
@@ -186,7 +186,7 @@ class Web3Client {
   ///
   /// This function allows specifying a custom block mined in the past to get
   /// historical data. By default, [BlockNum.current] will be used.
-  Future<EtherAmount> getBalance(EthereumAddress address, {BlockNum? atBlock}) {
+  Future<EtherAmount> getBalance(LyraAddress address, {BlockNum? atBlock}) {
     final blockParam = _getBlockParam(atBlock);
 
     return _makeRPCCall<String>('eth_getBalance', [address.hex, blockParam])
@@ -201,7 +201,7 @@ class Web3Client {
   /// more details.
   /// This function allows specifying a custom block mined in the past to get
   /// historical data. By default, [BlockNum.current] will be used.
-  Future<Uint8List> getStorage(EthereumAddress address, BigInt position,
+  Future<Uint8List> getStorage(LyraAddress address, BigInt position,
       {BlockNum? atBlock}) {
     final blockParam = _getBlockParam(atBlock);
 
@@ -216,8 +216,7 @@ class Web3Client {
   ///
   /// This function allows specifying a custom block mined in the past to get
   /// historical data. By default, [BlockNum.current] will be used.
-  Future<int> getTransactionCount(EthereumAddress address,
-      {BlockNum? atBlock}) {
+  Future<int> getTransactionCount(LyraAddress address, {BlockNum? atBlock}) {
     final blockParam = _getBlockParam(atBlock);
 
     return _makeRPCCall<String>(
@@ -244,7 +243,7 @@ class Web3Client {
   ///
   /// This function allows specifying a custom block mined in the past to get
   /// historical data. By default, [BlockNum.current] will be used.
-  Future<Uint8List> getCode(EthereumAddress address, {BlockNum? atBlock}) {
+  Future<Uint8List> getCode(LyraAddress address, {BlockNum? atBlock}) {
     return _makeRPCCall<String>(
         'eth_getCode', [address.hex, _getBlockParam(atBlock)]).then(hexToBytes);
   }
@@ -325,7 +324,7 @@ class Web3Client {
   /// This function allows specifying a custom block mined in the past to get
   /// historical data. By default, [BlockNum.current] will be used.
   Future<List<dynamic>> call({
-    EthereumAddress? sender,
+    LyraAddress? sender,
     required DeployedContract contract,
     required ContractFunction function,
     required List<dynamic> params,
@@ -345,8 +344,8 @@ class Web3Client {
   /// sent via [sendTransaction]. Note that the estimate may be significantly
   /// higher than the amount of gas actually used by the transaction.
   Future<BigInt> estimateGas({
-    EthereumAddress? sender,
-    EthereumAddress? to,
+    LyraAddress? sender,
+    LyraAddress? to,
     EtherAmount? value,
     BigInt? amountOfGas,
     EtherAmount? gasPrice,
@@ -386,8 +385,8 @@ class Web3Client {
   /// - [call], which automatically encodes function parameters and parses a
   /// response.
   Future<String> callRaw({
-    EthereumAddress? sender,
-    required EthereumAddress contract,
+    LyraAddress? sender,
+    required LyraAddress contract,
     required Uint8List data,
     BlockNum? atBlock,
   }) {

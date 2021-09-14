@@ -10,10 +10,10 @@ const String wsUrl = 'ws://localhost:8545';
 const String privateKey =
     '9a43d93a50b622761d88c80c90567c02c82442746335a01b72f49b3c867c037d';
 
-final EthereumAddress contractAddr =
-    EthereumAddress.fromHex('0xeE9312C22890e0Bd9a9bB37Fd17572180F4Fc68a');
-final EthereumAddress receiver =
-    EthereumAddress.fromHex('0x6c87E1a114C3379BEc929f6356c5263d62542C13');
+final LyraAddress contractAddr =
+    LyraAddress.fromHex('0xeE9312C22890e0Bd9a9bB37Fd17572180F4Fc68a');
+final LyraAddress receiver =
+    LyraAddress.fromHex('0x6c87E1a114C3379BEc929f6356c5263d62542C13');
 
 /*
 Examples that deal with contracts. The contract used here is from the truffle

@@ -14,8 +14,8 @@ void main() {
   late Process ganacheCli;
   late int rpcPort;
 
-  late EthPrivateKey first;
-  late EthPrivateKey second;
+  late LyraPrivateKey first;
+  late LyraPrivateKey second;
 
   late Web3Client client;
 
@@ -53,8 +53,8 @@ void main() {
   tearDownAll(() => ganacheCli.kill());
 
   setUp(() {
-    first = EthPrivateKey(hexToBytes(_privateKey1));
-    second = EthPrivateKey(hexToBytes(_privateKey2));
+    first = LyraPrivateKey(hexToBytes(_privateKey1));
+    second = LyraPrivateKey(hexToBytes(_privateKey2));
 
     client = Web3Client('http://127.0.0.1:$rpcPort', Client());
   });

@@ -9,7 +9,7 @@ final _contractAbi = _i1.ContractAbi.fromJson(
 /// Interface of the ERC20 standard as defined in the EIP.
 class Erc20 extends _i1.GeneratedContract {
   Erc20(
-      {required _i1.EthereumAddress address,
+      {required _i1.LyraAddress address,
       required _i1.Web3Client client,
       int? chainId})
       : super(_i1.DeployedContract(_contractAbi, address), client, chainId);
@@ -19,8 +19,7 @@ class Erc20 extends _i1.GeneratedContract {
   /// The optional [atBlock] parameter can be used to view historical data. When
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
-  Future<BigInt> allowance(
-      _i1.EthereumAddress owner, _i1.EthereumAddress spender,
+  Future<BigInt> allowance(_i1.LyraAddress owner, _i1.LyraAddress spender,
       {_i1.BlockNum? atBlock}) async {
     final function = self.function('allowance');
     final params = [owner, spender];
@@ -33,7 +32,7 @@ class Erc20 extends _i1.GeneratedContract {
   /// The optional [transaction] parameter can be used to override parameters
   /// like the gas price, nonce and max gas. The `data` and `to` fields will be
   /// set by the contract.
-  Future<String> approve(_i1.EthereumAddress spender, BigInt amount,
+  Future<String> approve(_i1.LyraAddress spender, BigInt amount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
     final function = self.function('approve');
@@ -46,7 +45,7 @@ class Erc20 extends _i1.GeneratedContract {
   /// The optional [atBlock] parameter can be used to view historical data. When
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
-  Future<BigInt> balanceOf(_i1.EthereumAddress account,
+  Future<BigInt> balanceOf(_i1.LyraAddress account,
       {_i1.BlockNum? atBlock}) async {
     final function = self.function('balanceOf');
     final params = [account];
@@ -71,7 +70,7 @@ class Erc20 extends _i1.GeneratedContract {
   /// The optional [transaction] parameter can be used to override parameters
   /// like the gas price, nonce and max gas. The `data` and `to` fields will be
   /// set by the contract.
-  Future<String> transfer(_i1.EthereumAddress recipient, BigInt amount,
+  Future<String> transfer(_i1.LyraAddress recipient, BigInt amount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
     final function = self.function('transfer');
@@ -85,7 +84,7 @@ class Erc20 extends _i1.GeneratedContract {
   /// like the gas price, nonce and max gas. The `data` and `to` fields will be
   /// set by the contract.
   Future<String> transferFrom(
-      _i1.EthereumAddress sender, _i1.EthereumAddress recipient, BigInt amount,
+      _i1.LyraAddress sender, _i1.LyraAddress recipient, BigInt amount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
     final function = self.function('transferFrom');
@@ -121,13 +120,13 @@ class Erc20 extends _i1.GeneratedContract {
 /// Emitted when the allowance of a [spender] for an [owner] is set by a call to [Erc20.approve]. [value] is the new allowance.
 class Approval {
   Approval(List<dynamic> response)
-      : owner = (response[0] as _i1.EthereumAddress),
-        spender = (response[1] as _i1.EthereumAddress),
+      : owner = (response[0] as _i1.LyraAddress),
+        spender = (response[1] as _i1.LyraAddress),
         value = (response[2] as BigInt);
 
-  final _i1.EthereumAddress owner;
+  final _i1.LyraAddress owner;
 
-  final _i1.EthereumAddress spender;
+  final _i1.LyraAddress spender;
 
   final BigInt value;
 }
@@ -135,13 +134,13 @@ class Approval {
 /// Emitted when [value] tokens are moved from one account ([from]) to another ([to]). Note that [value] may be zero.
 class Transfer {
   Transfer(List<dynamic> response)
-      : from = (response[0] as _i1.EthereumAddress),
-        to = (response[1] as _i1.EthereumAddress),
+      : from = (response[0] as _i1.LyraAddress),
+        to = (response[1] as _i1.LyraAddress),
         value = (response[2] as BigInt);
 
-  final _i1.EthereumAddress from;
+  final _i1.LyraAddress from;
 
-  final _i1.EthereumAddress to;
+  final _i1.LyraAddress to;
 
   final BigInt value;
 }
