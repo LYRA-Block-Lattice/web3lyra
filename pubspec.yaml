@@ -25,7 +25,7 @@ dependencies:
   stream_transform: ^2.0.0
   json_rpc_2: ^3.0.0
   collection: ^1.14.11
-  lyra: ^0.0.5
+  lyra: ^0.0.7
 
 dev_dependencies:
   build_runner: ^2.0.3

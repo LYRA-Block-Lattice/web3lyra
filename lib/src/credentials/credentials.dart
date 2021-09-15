@@ -114,11 +114,12 @@ class LyraPrivateKey extends CredentialsWithKnownAddress {
   @override
   LyraAddress get address {
     return _cachedAddress ??=
-        LyraAddress(publicKeyToAddress(privateKeyToPublic(privateKeyInt)));
+        LyraAddress(LyraCrypto.privateKeyIntToPublicKey(privateKeyInt));
   }
 
   /// Get the encoded public key in an (uncompressed) byte representation.
-  Uint8List get encodedPublicKey => privateKeyToPublic(privateKeyInt);
+  Uint8List get encodedPublicKey =>
+      LyraCrypto.privateKeyIntToPublicKey(privateKeyInt);
 
   /// The public key corresponding to this private key.
   ECPoint get publicKey => (params.G * privateKeyInt)!;
