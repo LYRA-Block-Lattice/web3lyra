@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:convert/convert.dart';
+import 'package:lyra/lyra.dart';
 // ignore: implementation_imports
 import 'package:pointycastle/src/utils.dart' as p_utils;
 
@@ -50,6 +51,13 @@ Uint8List hexToBytes(String hexStr) {
 Uint8List unsignedIntToBytes(BigInt number) {
   assert(!number.isNegative);
   return p_utils.encodeBigIntAsUnsigned(number);
+}
+
+Uint8List pvtKeyToUint8List(String privateKey) {
+  final hexStr = LyraCrypto.lyraDec(privateKey);
+  final bytes = hex.decode(hexStr);
+  return Uint8List.fromList(bytes);
+  //return bytesToUnsignedInt(Uint8List.fromList(bytes));
 }
 
 BigInt bytesToUnsignedInt(Uint8List bytes) {

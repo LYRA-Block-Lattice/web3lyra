@@ -97,6 +97,13 @@ class LyraPrivateKey extends CredentialsWithKnownAddress {
   LyraPrivateKey.fromInt(this.privateKeyInt)
       : privateKey = unsignedIntToBytes(privateKeyInt);
 
+  LyraPrivateKey.fromString(String privateKey)
+      : this(pvtKeyToUint8List(privateKey));
+
+  static bool validatePrivateKey(String privateKey) {
+    return LyraCrypto.isPrivateKeyValid(privateKey);
+  }
+
   /// Creates a new, random private key from the [random] number generator.
   ///
   /// For security reasons, it is very important that the random generator used
