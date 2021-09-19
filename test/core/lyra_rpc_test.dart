@@ -40,12 +40,7 @@ void main() {
     final credentials = LyraPrivateKey.fromString(pvtKey);
     final client = Web3Client('testnet');
 
-    await client.getBalance(LyraAddress.fromAccountId(pubAddr));
-
-    await client.receiveTransaction(credentials);
-
-    final balance0 =
-        await client.getBalance(LyraAddress.fromAccountId(pubAddr));
+    final balance0 = await client.receiveTransaction(credentials);
 
     final balance1 = await client.sendTransaction(
       credentials,
