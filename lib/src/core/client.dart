@@ -287,6 +287,27 @@ class Web3Client {
     });
   }
 
+  Future<Map<String, double>> receiveTransaction(Credentials cred) async {
+    // first save private key
+    _prvKey = cred;
+
+    // ignore: literal_only_boolean_expressions
+    while (true) {
+      final data = await _makeRPCCall<Map<String, dynamic>>(
+          'Receive', [(await cred.extractAddress()).toString()]);
+
+      if (data['unreceived'] as bool) {
+        continue;
+      }
+
+      _prvKey = null;
+
+      final bls =
+          Map<String, double>.from(data['balance'] as Map<dynamic, dynamic>);
+      return bls;
+    }
+  }
+
   /// Signs the given transaction using the keys supplied in the [cred]
   /// object to upload it to the client so that it can be executed.
   ///
@@ -304,6 +325,7 @@ class Web3Client {
       transaction.to!.toString(),
       'LYR'
     ]).then((data) {
+      _prvKey = null;
       final bls =
           Map<String, double>.from(data['balance'] as Map<dynamic, dynamic>);
       return bls;

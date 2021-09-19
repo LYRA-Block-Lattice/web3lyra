@@ -7,7 +7,6 @@ import 'dart:typed_data';
 import 'package:collection/collection.dart';
 import 'package:json_rpc_2/json_rpc_2.dart' as rpc;
 import 'package:json_rpc_2/json_rpc_2.dart';
-import 'package:lyra/lyra.dart';
 import 'package:stream_channel/stream_channel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 //import 'package:web_socket_channel/io.dart';

@@ -22,6 +22,11 @@ class MetaMaskCredentials extends CredentialsWithKnownAddress
       : address = LyraAddress.fromHex(hexAddress);
 
   @override
+  String signLyra(String msg) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<MsgSignature> signToSignature(Uint8List payload, {int? chainId}) {
     throw UnsupportedError('Signing raw payloads is not supported on MetaMask');
   }

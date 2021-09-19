@@ -34,18 +34,26 @@ void main() {
     const pubAddr =
         'LUaFA7PZsTPkb6TBfinHYaoGXbecPnLDKtV7vVnkyujnJQgoJytAdfcAH7W3SQETJ4VGKGDxNzNnjNX49WqEH8nPQZ7fA6';
 
-    const targetPvt = '2ciLv1uVZvxjbhZ5CEpd42EYC88k9ErU6qfbSbNAJqTHZyzxX4';
+    //const targetPvt = '2ciLv1uVZvxjbhZ5CEpd42EYC88k9ErU6qfbSbNAJqTHZyzxX4';
     const targetAddr =
         'LYvCce7eyVnp4xbT6Ho78dHRP84uqLp3HQLJLF7rE4Y78CAX2cVt9JJtBYBstJ1zAyB54fGjfmXc9SKH5aH5486gPRsTrr';
     final credentials = LyraPrivateKey.fromString(pvtKey);
     final client = Web3Client('testnet');
-    final hash = await client.sendTransaction(
+
+    await client.getBalance(LyraAddress.fromAccountId(pubAddr));
+
+    await client.receiveTransaction(credentials);
+
+    final balance0 =
+        await client.getBalance(LyraAddress.fromAccountId(pubAddr));
+
+    final balance1 = await client.sendTransaction(
       credentials,
       Transaction(
           to: LyraAddress.fromAccountId(targetAddr),
           value: EtherAmount.fromUnitAndValue(EtherUnit.ether, 10)),
     );
 
-    expect(hash, isNotNull);
+    expect(balance1['LYR'], balance0['LYR']! - 11);
   });
 }
