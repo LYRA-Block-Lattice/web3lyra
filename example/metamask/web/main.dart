@@ -12,7 +12,7 @@ Future<void> main() async {
     return;
   }
 
-  final client = Web3Client.custom(eth.asRpcService());
+  final client = Web3Client('');
   final credentials = await eth.requestAccount();
 
   print('Using ${credentials.address}');

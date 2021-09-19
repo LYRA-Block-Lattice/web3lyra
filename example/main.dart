@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
 const String privateKey =
@@ -7,7 +6,7 @@ const String rpcUrl = 'http://localhost:7545';
 
 Future<void> main() async {
   // start a client we can use to send transactions
-  final client = Web3Client(rpcUrl, Client());
+  final client = Web3Client(rpcUrl);
 
   final credentials = await client.credentialsFromPrivateKey(privateKey);
   final address = credentials.address;

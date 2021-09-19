@@ -1,19 +1,20 @@
 library web3dart;
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
-import 'package:http/http.dart';
 import 'package:json_rpc_2/json_rpc_2.dart' as rpc;
-import 'package:meta/meta.dart';
+import 'package:json_rpc_2/json_rpc_2.dart';
+import 'package:lyra/lyra.dart';
 import 'package:stream_channel/stream_channel.dart';
-import 'package:stream_transform/stream_transform.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+//import 'package:web_socket_channel/io.dart';
 
 import 'contracts.dart';
 import 'credentials.dart';
 import 'crypto.dart';
-import 'json_rpc.dart';
 import 'src/core/amount.dart';
 import 'src/core/block_number.dart';
 import 'src/core/sync_information.dart';

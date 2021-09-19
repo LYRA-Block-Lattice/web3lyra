@@ -1,6 +1,4 @@
-import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:web_socket_channel/io.dart';
 
 import 'token.g.dart';
 
@@ -55,9 +53,7 @@ Future<void> main() async {
   // establish a connection to the ethereum rpc node. The socketConnector
   // property allows more efficient event streams over websocket instead of
   // http-polls. However, the socketConnector property is experimental.
-  final client = Web3Client(rpcUrl, Client(), socketConnector: () {
-    return IOWebSocketChannel.connect(wsUrl).cast<String>();
-  });
+  final client = Web3Client(rpcUrl);
   final credentials = await client.credentialsFromPrivateKey(privateKey);
   final ownAddress = await credentials.extractAddress();
 

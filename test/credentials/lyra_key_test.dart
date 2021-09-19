@@ -14,10 +14,10 @@ void main() {
   });
 
   test('restore wallet from private key', () async {
-    final privateKey =
+    const privateKey =
         '3249c9f5976518da19a67048552603e8cf8e54c7b2ee520489656e164134d06d';
-    final pvtKeyLyra = 'P9YeD3uNs8puVFyrm9CJN2cBv4Nzg99UK2Ku6xDiXr2QmdUBc';
-    var pubAddr =
+    const pvtKeyLyra = 'P9YeD3uNs8puVFyrm9CJN2cBv4Nzg99UK2Ku6xDiXr2QmdUBc';
+    const pubAddr =
         'LUaFA7PZsTPkb6TBfinHYaoGXbecPnLDKtV7vVnkyujnJQgoJytAdfcAH7W3SQETJ4VGKGDxNzNnjNX49WqEH8nPQZ7fA6';
 
     final Credentials credentials = LyraPrivateKey.fromHex(privateKey);

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
@@ -26,8 +25,12 @@ class LyraAddress {
   /// Constructs an Ethereum address from a public key. The address is formed by
   /// the last 20 bytes of the keccak hash of the public key.
   factory LyraAddress.fromPublicKey(Uint8List publicKey) {
-    var accountId = LyraCrypto.lyraEncPub(publicKey);
-    return LyraAddress(Uint8List.fromList(utf8.encode(accountId)));
+    return LyraAddress(publicKey);
+  }
+
+  factory LyraAddress.fromAccountId(String accountId) {
+    final publicKey = LyraCrypto.lyraDecAccountId(accountId);
+    return LyraAddress(hexToBytes(publicKey));
   }
 
   /// Parses an Ethereum address from the hexadecimal representation. The

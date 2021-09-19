@@ -1,7 +1,6 @@
 @TestOn('vm')
 import 'dart:io';
 
-import 'package:http/http.dart';
 import 'package:test/test.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
@@ -15,8 +14,7 @@ void main() {
       late final Web3Client client;
 
       setUpAll(() {
-        client = Web3Client(
-            'https://mainnet.infura.io/v3/$infuraProjectId', Client());
+        client = Web3Client('https://mainnet.infura.io/v3/$infuraProjectId');
       });
 
       // ignore: unnecessary_lambdas, https://github.com/dart-lang/linter/issues/2670

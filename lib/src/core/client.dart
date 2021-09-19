@@ -22,69 +22,89 @@ typedef SocketConnector = StreamChannel<String> Function();
 /// accounts yourself.
 class Web3Client {
   /// Starts a client that connects to a JSON rpc API, available at [url]. The
-  /// [httpClient] will be used to send requests to the rpc server.
   /// Am isolate will be used to perform expensive operations, such as signing
   /// transactions or computing private keys.
-  Web3Client(String url, Client httpClient, {this.socketConnector})
-      : _jsonRpc = JsonRPC(url, httpClient) {
+  Web3Client(String network) : _network = network {
     _operations = _ExpensiveOperations();
-    _filters = _FilterEngine(this);
   }
-
-  Web3Client.custom(RpcService rpc, {this.socketConnector}) : _jsonRpc = rpc;
 
   static const BlockNum _defaultBlock = BlockNum.current();
 
-  final RpcService _jsonRpc;
+  // maybe null
+  String? _prvKey;
 
-  /// Some ethereum nodes support an event channel over websockets. Web3dart
-  /// will use the [StreamChannel] returned by this function as a socket to send
-  /// event requests and parse responses. Can be null, in which case a polling
-  /// implementation for events will be used.
-  @experimental
-  final SocketConnector? socketConnector;
+  final String _network;
+  late String _nodeAddress;
+  Peer? _client;
 
-  rpc.Peer? _streamRpcPeer;
   late _ExpensiveOperations _operations;
-  late _FilterEngine _filters;
+//  late _FilterEngine _filters;
 
   ///Whether errors, handled or not, should be printed to the console.
   bool printErrors = false;
 
+  /// connect to JsonRPC and get service status.
+  Future<void> init() async {
+    // crypto
+
+    // if (!LyraCrypto.isPrivateKeyValid(prvKey)) {
+    //   throw ('Not valid private key.');
+    // }
+    // accountId = LyraCrypto.prvToPub(prvKey);
+    _nodeAddress = 'wss://$_network.lyra.live/api/v1/socket';
+
+    // websocket
+    final ws = WebSocketChannel.connect(Uri.parse(_nodeAddress));
+    _client = Peer(ws.cast<String>());
+
+    // The client won't subscribe to the input stream until you call `listen`.
+    // The returned Future won't complete until the connection is closed.
+    unawaited(_client!.listen());
+
+    _client!.registerMethod('Notify', (Parameters news) {
+      print('Got news from Lyra: ${news.asList[1]}');
+    });
+
+    _client!.registerMethod('Sign', (Parameters req) {
+      print('Got signning callback.');
+
+      print('Signing ${req.asList[1]}');
+      try {
+        final signature = LyraCrypto.sign(req.asList[1].toString(), _prvKey!);
+        print('signature is: $signature');
+        return ['p1393', signature];
+      } on Exception catch (e) {
+        return ['error', e.toString()];
+      }
+    });
+
+    try {
+      final status =
+          await _client!.sendRequest('Status', ['2.3.0.0', _network]);
+      print(status.toString());
+    } on RpcException catch (error) {
+      print('RPC error ${error.code}: ${error.message}');
+    }
+  }
+
   Future<T> _makeRPCCall<T>(String function, [List<dynamic>? params]) async {
     try {
-      final data = await _jsonRpc.call(function, params);
-      // ignore: only_throw_errors
-      if (data is Error || data is Exception) throw data;
+      if (_client == null || _client!.isClosed) {
+        await init();
+      }
 
-      return data.result as T;
+      final data = await _client!.sendRequest(function, params);
+      // ignore: only_throw_errors
+      if (data is Error || data is Exception) throw data as Object;
+
+      print(json.encode(data));
+      return data as T;
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       if (printErrors) print(e);
 
       rethrow;
     }
-  }
-
-  rpc.Peer? _connectWithPeer() {
-    if (_streamRpcPeer != null && !_streamRpcPeer!.isClosed) {
-      return _streamRpcPeer;
-    }
-    if (socketConnector == null) return null;
-
-    final socket = socketConnector!();
-    _streamRpcPeer = rpc.Peer(socket)
-      ..registerMethod('eth_subscription', (rpc.Parameters params) {
-        _filters.handlePubSubNotification(params);
-      });
-
-    _streamRpcPeer?.listen().then((_) {
-      // .listen() will complete when the socket is closed, so reset client
-      _streamRpcPeer = null;
-      _filters.handleConnectionClosed();
-    });
-
-    return _streamRpcPeer;
   }
 
   String _getBlockParam(BlockNum? block) {
@@ -186,12 +206,17 @@ class Web3Client {
   ///
   /// This function allows specifying a custom block mined in the past to get
   /// historical data. By default, [BlockNum.current] will be used.
-  Future<EtherAmount> getBalance(LyraAddress address, {BlockNum? atBlock}) {
-    final blockParam = _getBlockParam(atBlock);
-
-    return _makeRPCCall<String>('eth_getBalance', [address.hex, blockParam])
+  Future<Map<String, double>> getBalance(LyraAddress address,
+      {BlockNum? atBlock}) {
+    return _makeRPCCall<Map<String, dynamic>>('Balance', [address.toString()])
         .then((data) {
-      return EtherAmount.fromUnitAndValue(EtherUnit.wei, hexToInt(data));
+      if (data['height'] as int == 0) {
+        return <String, double>{};
+      } else {
+        final bls =
+            Map<String, double>.from(data['balance'] as Map<dynamic, dynamic>);
+        return bls;
+      }
     });
   }
 
@@ -410,9 +435,10 @@ class Web3Client {
   /// See also:
   /// - [hexToBytes] and [hexToInt], which can transform hex strings into a byte
   /// or integer representation.
-  Stream<String> addedBlocks() {
-    return _filters.addFilter(_NewBlockFilter());
-  }
+  // Stream<String> addedBlocks() {
+  //   //return _filters.addFilter(_NewBlockFilter());
+  //   return '';
+  // }
 
   /// Listens for pending transactions as they are received by the connected
   /// node. The stream will emit the hexadecimal hash of the pending
@@ -422,9 +448,9 @@ class Web3Client {
   /// See also:
   /// - [hexToBytes] and [hexToInt], which can transform hex strings into a byte
   /// or integer representation.
-  Stream<String> pendingTransactions() {
-    return _filters.addFilter(_PendingTransactionsFilter());
-  }
+  // Stream<String> pendingTransactions() {
+  //   return _filters.addFilter(_PendingTransactionsFilter());
+  // }
 
   /// Listens for logs emitted from transactions. The [options] can be used to
   /// apply additional filters.
@@ -433,22 +459,24 @@ class Web3Client {
   /// See also:
   /// - https://solidity.readthedocs.io/en/develop/contracts.html#events, which
   /// explains more about how events are encoded.
-  Stream<FilterEvent> events(FilterOptions options) {
-    if (socketConnector != null) {
-      // The real-time rpc nodes don't support listening to old data, so handle
-      // that here.
-      return Stream.fromFuture(getLogs(options))
-          .expand((e) => e)
-          .followedBy(_filters.addFilter(_EventFilter(options)));
-    }
+  // Stream<FilterEvent> events(FilterOptions options) {
+  //   if (socketConnector != null) {
+  //     // The real-time rpc nodes don't support listening to old data, so handle
+  //     // that here.
+  //     return Stream.fromFuture(getLogs(options))
+  //         .expand((e) => e)
+  //         .followedBy(_filters.addFilter(_EventFilter(options)));
+  //   }
 
-    return _filters.addFilter(_EventFilter(options));
-  }
+  //   return _filters.addFilter(_EventFilter(options));
+  // }
 
   /// Closes resources managed by this client, such as the optional background
   /// isolate for calculations and managed streams.
   Future<void> dispose() async {
-    await _filters.dispose();
-    await _streamRpcPeer?.close();
+    // await _filters.dispose();
+    // await _streamRpcPeer?.close();
   }
 }
+
+// datatypes

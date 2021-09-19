@@ -21,47 +21,47 @@ abstract class _Filter<T> {
   T parseChanges(dynamic log);
 }
 
-class _NewBlockFilter extends _Filter<String> {
-  @override
-  bool get supportsPubSub => false;
+// class _NewBlockFilter extends _Filter<String> {
+//   @override
+//   bool get supportsPubSub => false;
 
-  @override
-  _FilterCreationParams create() {
-    return _FilterCreationParams('eth_newBlockFilter', []);
-  }
+//   @override
+//   _FilterCreationParams create() {
+//     return _FilterCreationParams('eth_newBlockFilter', []);
+//   }
 
-  @override
-  String parseChanges(dynamic log) {
-    return log as String;
-  }
+//   @override
+//   String parseChanges(dynamic log) {
+//     return log as String;
+//   }
 
-  @override
-  _PubSubCreationParams createPubSub() {
-    // the pub-sub subscription for new blocks isn't universally supported by
-    // ethereum nodes, so let's not implement it just yet.
-    return _PubSubCreationParams(List.empty());
-  }
-}
+//   @override
+//   _PubSubCreationParams createPubSub() {
+//     // the pub-sub subscription for new blocks isn't universally supported by
+//     // ethereum nodes, so let's not implement it just yet.
+//     return _PubSubCreationParams(List.empty());
+//   }
+// }
 
-class _PendingTransactionsFilter extends _Filter<String> {
-  @override
-  bool get supportsPubSub => false;
+// class _PendingTransactionsFilter extends _Filter<String> {
+//   @override
+//   bool get supportsPubSub => false;
 
-  @override
-  _FilterCreationParams create() {
-    return _FilterCreationParams('eth_newPendingTransactionFilter', []);
-  }
+//   @override
+//   _FilterCreationParams create() {
+//     return _FilterCreationParams('eth_newPendingTransactionFilter', []);
+//   }
 
-  @override
-  String parseChanges(log) {
-    return log as String;
-  }
+//   @override
+//   String parseChanges(log) {
+//     return log as String;
+//   }
 
-  @override
-  _PubSubCreationParams createPubSub() {
-    return _PubSubCreationParams(List.empty());
-  }
-}
+//   @override
+//   _PubSubCreationParams createPubSub() {
+//     return _PubSubCreationParams(List.empty());
+//   }
+// }
 
 /// Options for event filters created with [Web3Client.events].
 class FilterOptions {
@@ -275,15 +275,16 @@ class _EventFilter extends _Filter<FilterEvent> {
   }
 }
 
-const _pingDuration = Duration(seconds: 2);
+//const _pingDuration = Duration(seconds: 2);
 
+// ignore: unused_element
 class _FilterEngine {
   _FilterEngine(this._client);
 
   final List<_InstantiatedFilter> _filters = [];
   final Web3Client _client;
 
-  RpcService get _rpc => _client._jsonRpc;
+  //RpcService get _rpc => _client._jsonRpc;
 
   Timer? _ticker;
   bool _isRefreshing = false;
@@ -291,81 +292,81 @@ class _FilterEngine {
 
   final List<Future> _pendingUnsubcriptions = [];
 
-  Stream<T> addFilter<T>(_Filter<T> filter) {
-    final pubSubAvailable = _client.socketConnector != null;
+  // Stream<T> addFilter<T>(_Filter<T> filter) {
+  //   final pubSubAvailable = _client.socketConnector != null;
 
-    late _InstantiatedFilter<T> instantiated;
-    instantiated = _InstantiatedFilter(
-        filter, filter.supportsPubSub && pubSubAvailable, () {
-      _pendingUnsubcriptions.add(uninstall(instantiated));
-    });
+  //   late _InstantiatedFilter<T> instantiated;
+  //   instantiated = _InstantiatedFilter(
+  //       filter, filter.supportsPubSub && pubSubAvailable, () {
+  //     _pendingUnsubcriptions.add(uninstall(instantiated));
+  //   });
 
-    instantiated._controller.onListen = () {
-      _filters.add(instantiated);
+  //   instantiated._controller.onListen = () {
+  //     _filters.add(instantiated);
 
-      if (instantiated.isPubSub) {
-        _registerToPubSub(instantiated, filter.createPubSub());
-      } else {
-        _registerToAPI(instantiated);
-        _startTicking();
-      }
-    };
+  //     if (instantiated.isPubSub) {
+  //       _registerToPubSub(instantiated, filter.createPubSub());
+  //     } else {
+  //       _registerToAPI(instantiated);
+  //       _startTicking();
+  //     }
+  //   };
 
-    return instantiated._controller.stream;
-  }
+  //   return instantiated._controller.stream;
+  // }
 
-  Future<void> _registerToAPI(_InstantiatedFilter filter) async {
-    final request = filter.filter.create();
+  // Future<void> _registerToAPI(_InstantiatedFilter filter) async {
+  //   final request = filter.filter.create();
 
-    try {
-      final response = await _rpc.call(request.method, request.params);
-      filter.id = response.result as String;
-    } on RPCError catch (e, s) {
-      filter._controller.addError(e, s);
-      await filter._controller.close();
-      _filters.remove(filter);
-    }
-  }
+  //   try {
+  //     final response = await _rpc.call(request.method, request.params);
+  //     filter.id = response.result as String;
+  //   } on RPCError catch (e, s) {
+  //     filter._controller.addError(e, s);
+  //     await filter._controller.close();
+  //     _filters.remove(filter);
+  //   }
+  // }
 
-  Future<void> _registerToPubSub(
-      _InstantiatedFilter filter, _PubSubCreationParams params) async {
-    final peer = _client._connectWithPeer();
+  // Future<void> _registerToPubSub(
+  //     _InstantiatedFilter filter, _PubSubCreationParams params) async {
+  //   final peer = _client._connectWithPeer();
 
-    try {
-      final response = await peer?.sendRequest('eth_subscribe', params.params);
-      filter.id = response as String;
-    } on rpc.RpcException catch (e, s) {
-      filter._controller.addError(e, s);
-      await filter._controller.close();
-      _filters.remove(filter);
-    }
-  }
+  //   try {
+  //     final response = await peer?.sendRequest('eth_subscribe', params.params);
+  //     filter.id = response as String;
+  //   } on rpc.RpcException catch (e, s) {
+  //     filter._controller.addError(e, s);
+  //     await filter._controller.close();
+  //     _filters.remove(filter);
+  //   }
+  // }
 
-  void _startTicking() {
-    _ticker ??= Timer.periodic(_pingDuration, (_) => _refreshFilters());
-  }
+  // void _startTicking() {
+  //   _ticker ??= Timer.periodic(_pingDuration, (_) => _refreshFilters());
+  // }
 
-  Future<void> _refreshFilters() async {
-    if (_isRefreshing) return;
-    _isRefreshing = true;
+  // Future<void> _refreshFilters() async {
+  //   if (_isRefreshing) return;
+  //   _isRefreshing = true;
 
-    try {
-      final filterSnapshot = List.of(_filters);
+  //   try {
+  //     final filterSnapshot = List.of(_filters);
 
-      for (final filter in filterSnapshot) {
-        final updatedData =
-            await _rpc.call('eth_getFilterChanges', [filter.id]);
+  //     for (final filter in filterSnapshot) {
+  //       final updatedData =
+  //           await _rpc.call('eth_getFilterChanges', [filter.id]);
 
-        for (final payload in updatedData.result) {
-          if (!filter._controller.isClosed) {
-            _parseAndAdd(filter, payload);
-          }
-        }
-      }
-    } finally {
-      _isRefreshing = false;
-    }
-  }
+  //       for (final payload in updatedData.result) {
+  //         if (!filter._controller.isClosed) {
+  //           _parseAndAdd(filter, payload);
+  //         }
+  //       }
+  //     }
+  //   } finally {
+  //     _isRefreshing = false;
+  //   }
+  // }
 
   void handlePubSubNotification(rpc.Parameters params) {
     final id = params['subscription'].asString;
@@ -397,10 +398,10 @@ class _FilterEngine {
     _filters.remove(filter);
 
     if (filter.isPubSub && !_clearingBecauseSocketClosed) {
-      final connection = _client._connectWithPeer();
-      await connection?.sendRequest('eth_unsubscribe', [filter.id]);
+      // final connection = _client._connectWithPeer();
+      // await connection?.sendRequest('eth_unsubscribe', [filter.id]);
     } else {
-      await _rpc.call('eth_uninstallFilter', [filter.id]);
+      //await _rpc.call('eth_uninstallFilter', [filter.id]);
     }
   }
 
