@@ -31,7 +31,7 @@ class Web3Client {
   static const BlockNum _defaultBlock = BlockNum.current();
 
   // maybe null
-  String? _prvKey;
+  Credentials? _prvKey;
 
   final String _network;
   late String _nodeAddress;
@@ -70,7 +70,7 @@ class Web3Client {
 
       print('Signing ${req.asList[1]}');
       try {
-        final signature = LyraCrypto.sign(req.asList[1].toString(), _prvKey!);
+        final signature = _prvKey!.signLyra(req.asList[1].toString());
         print('signature is: $signature');
         return ['p1393', signature];
       } on Exception catch (e) {
@@ -93,6 +93,7 @@ class Web3Client {
         await init();
       }
 
+      print(params);
       final data = await _client!.sendRequest(function, params);
       // ignore: only_throw_errors
       if (data is Error || data is Exception) throw data as Object;
@@ -292,16 +293,21 @@ class Web3Client {
   /// Returns a hash of the transaction which, after the transaction has been
   /// included in a mined block, can be used to obtain detailed information
   /// about the transaction.
-  Future<String> sendTransaction(Credentials cred, Transaction transaction,
+  Future<Map<String, double>> sendTransaction(
+      Credentials cred, Transaction transaction,
       {int? chainId = 1, bool fetchChainIdFromNetworkId = false}) async {
-    if (cred is CustomTransactionSender) {
-      return cred.sendTransaction(transaction);
-    }
-
-    final signed = await signTransaction(cred, transaction,
-        chainId: chainId, fetchChainIdFromNetworkId: fetchChainIdFromNetworkId);
-
-    return sendRawTransaction(signed);
+    // first save private key
+    _prvKey = cred;
+    return _makeRPCCall<Map<String, dynamic>>('Send', [
+      (await cred.extractAddress()).toString(),
+      transaction.value!.getValueInUnit(EtherUnit.ether),
+      transaction.to!.toString(),
+      'LYR'
+    ]).then((data) {
+      final bls =
+          Map<String, double>.from(data['balance'] as Map<dynamic, dynamic>);
+      return bls;
+    });
   }
 
   /// Sends a raw, signed transaction.

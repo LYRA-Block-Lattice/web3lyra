@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:code_builder/code_builder.dart';
 import 'package:build/build.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:path/path.dart';
 import 'package:web3dart/contracts.dart';
@@ -127,7 +127,7 @@ class _ContractGeneration {
       ..optionalParameters.addAll([
         Parameter((b) => b
           ..name = 'address'
-          ..type = LyraAddress
+          ..type = lyraAddress
           ..named = true
           ..required = true),
         Parameter((b) => b

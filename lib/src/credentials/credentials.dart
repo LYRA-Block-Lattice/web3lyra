@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:lyra/lyra.dart';
 import 'package:collection/collection.dart';
+import 'package:lyra/lyra.dart';
 import 'package:pointycastle/ecc/api.dart' show ECPoint;
 
 import '../../web3dart.dart' show Transaction;
@@ -26,6 +26,8 @@ abstract class Credentials {
 
   /// Loads the ethereum address specified by these credentials.
   Future<LyraAddress> extractAddress();
+
+  String signLyra(String msg);
 
   /// Signs the [payload] with a private key. The output will be like the
   /// bytes representation of the [eth_sign RPC method](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign),
@@ -130,6 +132,11 @@ class LyraPrivateKey extends CredentialsWithKnownAddress {
 
   /// The public key corresponding to this private key.
   ECPoint get publicKey => (params.G * privateKeyInt)!;
+
+  @override
+  String signLyra(String msg) {
+    return LyraCrypto.sign(msg, LyraCrypto.lyraEnc(privateKey));
+  }
 
   @override
   Future<MsgSignature> signToSignature(Uint8List payload,

@@ -20,7 +20,7 @@ final dynamicType = referType('dynamic', 'dart:core');
 final listType = listify(dynamicType);
 
 final web3Client = referType('Web3Client', package);
-final LyraAddress = referType('LyraAddress', package);
+final lyraAddress = referType('LyraAddress', package);
 final blockNum = referType('BlockNum', package);
 final credentials = referType('Credentials', package);
 final contractAbi = referType('ContractAbi', package);
@@ -89,7 +89,7 @@ final argContractAddress = refer('contractAddress');
 extension AbiTypeToDart on AbiType {
   TypeReference toDart() {
     if (this is AddressType) {
-      return LyraAddress;
+      return lyraAddress;
     } else if (this is UintType || this is IntType) {
       return bigInt;
     } else if (this is StringType) {
