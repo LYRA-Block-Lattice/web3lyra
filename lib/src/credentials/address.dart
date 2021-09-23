@@ -33,6 +33,10 @@ class LyraAddress {
     return LyraAddress(hexToBytes(publicKey));
   }
 
+  static bool isAddressValid(String address) {
+    return LyraCrypto.isAccountIdValid(address);
+  }
+
   /// Parses an Ethereum address from the hexadecimal representation. The
   /// representation must have a length of 20 bytes (or 40 hexadecimal chars),
   /// and can optionally be prefixed with "0x".

@@ -314,8 +314,7 @@ class Web3Client {
   /// Returns a hash of the transaction which, after the transaction has been
   /// included in a mined block, can be used to obtain detailed information
   /// about the transaction.
-  Future<Map<String, double>> sendTransaction(
-      Credentials cred, Transaction transaction,
+  Future<dynamic> sendTransaction(Credentials cred, Transaction transaction,
       {int? chainId = 1, bool fetchChainIdFromNetworkId = false}) async {
     // first save private key
     _prvKey = cred;
@@ -326,9 +325,9 @@ class Web3Client {
       'LYR'
     ]).then((data) {
       _prvKey = null;
-      final bls =
-          Map<String, double>.from(data['balance'] as Map<dynamic, dynamic>);
-      return bls;
+      // final bls =
+      //     Map<String, double>.from(data['balance'] as Map<dynamic, dynamic>);
+      return data;
     });
   }
 
