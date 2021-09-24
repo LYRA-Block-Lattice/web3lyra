@@ -302,9 +302,13 @@ class Web3Client {
 
       _prvKey = null;
 
-      final bls =
-          Map<String, double>.from(data['balance'] as Map<dynamic, dynamic>);
-      return bls;
+      if (data['height'] as int == 0) {
+        return <String, double>{};
+      } else {
+        final bls =
+            Map<String, double>.from(data['balance'] as Map<dynamic, dynamic>);
+        return bls;
+      }
     }
   }
 
